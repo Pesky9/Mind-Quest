@@ -11,7 +11,8 @@ createRoot(document.getElementById("root")).render(
     <Router>
       <Routes>
         <Route exact path="/" element={<App />} />
-        <Route exact path="/home" element={<Memory />} />
+        <Route exact path="/home" element={<Homepage />} />
+        <Route exact path="/memory" element={<Memory />} />
       </Routes>
     </Router>
   </StrictMode>
