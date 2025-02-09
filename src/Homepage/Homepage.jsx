@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Homepage.css";
 import Memory from "../assets/memory.webp";
+import Tetris from "../assets/Tetris.jpeg";
 import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
@@ -20,23 +21,10 @@ const Homepage = () => {
     "See what makes this game special!",
   ];
 
-  const backgroundImages = [
-    `url(${Memory})`,
-    `url(${Memory})`,
-    `url(${Memory})`,
-    `url(${Memory})`,
-    `url(${Memory})`,
-    `url(${Memory})`,
-  ];
-
   const [randomPhrase, setRandomPhrase] = useState("");
-  const [randomBackground, setRandomBackground] = useState("");
 
   useEffect(() => {
     setRandomPhrase(phrases[Math.floor(Math.random() * phrases.length)]);
-    setRandomBackground(
-      backgroundImages[Math.floor(Math.random() * backgroundImages.length)]
-    );
   }, []);
 
   return (
@@ -44,14 +32,25 @@ const Homepage = () => {
       <div className="Heading">
         <h1>Hello, Player!</h1>
         <h2>Good Evening</h2>
-        <div
-          className="Try_This"
-          style={{ backgroundImage: randomBackground }}
-          onClick={() => {
-            navigate("/memory");
-          }}
-        >
-          <h3>{randomPhrase}</h3>
+        <div className="Game_Section">
+          <div
+            className="Try_This"
+            style={{ backgroundImage: `url(${Memory})` }}
+            onClick={() => {
+              navigate("/memory");
+            }}
+          >
+            <h3>Memory</h3>
+          </div>
+          <div
+            className="Try_This"
+            style={{ backgroundImage: `url(${Tetris})` }}
+            onClick={() => {
+              navigate("/tetris");
+            }}
+          >
+            <h3>Tetris</h3>
+          </div>
         </div>
       </div>
     </div>
