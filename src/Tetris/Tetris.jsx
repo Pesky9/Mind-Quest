@@ -97,6 +97,7 @@ const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const dropInterval = 1000;
   const touchStartRef = useRef(null);
+  const boardRef = useRef(null);
 
   const checkCollision = (pos, shape) => {
     for (let y = 0; y < shape.length; y++) {
@@ -204,6 +205,16 @@ const Tetris = () => {
   };
 
   useEffect(() => {
+    const board = boardRef.current;
+    const preventDefault = (e) => e.preventDefault();
+    board.addEventListener("touchmove", preventDefault, { passive: false });
+
+    return () => {
+      board.removeEventListener("touchmove", preventDefault);
+    };
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
@@ -298,6 +309,7 @@ const Tetris = () => {
         </div>
       )}
       <div
+        ref={boardRef}
         className="board"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}

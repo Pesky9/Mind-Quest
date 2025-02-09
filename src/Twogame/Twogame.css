@@ -20,6 +20,9 @@
   padding: 10px;
   border-radius: 6px;
 }
+.game2048-board {
+  overscroll-behavior: none;
+}
 .game2048-cell {
   position: relative;
   width: 100%;

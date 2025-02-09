@@ -3,24 +3,25 @@
   flex-direction: column;
   align-items: center;
 }
-.grid {
+.sudoku-grid {
+  display: grid;
   gap: 4px;
   margin: 20px auto;
   width: 90vw;
 }
 @media (max-width: 599px) {
-  .grid {
+  .sudoku-grid {
     grid-template-columns: repeat(4, 1fr);
     max-width: 400px;
   }
 }
 @media (min-width: 600px) {
-  .grid {
+  .sudoku-grid {
     grid-template-columns: repeat(8, 1fr);
     max-width: 600px;
   }
 }
-.cell {
+.sudoku-cell {
   width: 100%;
   height: 50px;
   font-size: 20px;
@@ -32,8 +33,8 @@
   padding: 0;
   line-height: 50px;
 }
-.cell::-webkit-inner-spin-button,
-.cell::-webkit-outer-spin-button {
+.sudoku-cell::-webkit-inner-spin-button,
+.sudoku-cell::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

@@ -96,7 +96,7 @@ function Sudoku() {
           Mini Sudoku ({boardSize}x{boardSize})
         </h2>
         <div className="timer">Time: {timeElapsed}s</div>
-        <div className="grid">
+        <div className="sudoku-grid">
           {board.map((row, rowIndex) =>
             row.map((cell, colIndex) => (
               <input
@@ -104,7 +104,7 @@ function Sudoku() {
                 type="number"
                 min="1"
                 max={boardSize}
-                className="cell"
+                className="sudoku-cell"
                 value={cell.value}
                 disabled={cell.disabled}
                 onChange={(e) => handleChange(e, rowIndex, colIndex)}

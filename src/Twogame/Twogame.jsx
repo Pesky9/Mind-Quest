@@ -109,6 +109,7 @@ const Twogame = () => {
   const [grid, setGrid] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const touchStartRef = useRef(null);
+  const boardRef = useRef(null);
 
   useEffect(() => {
     const updateGridSize = () => {
@@ -122,6 +123,15 @@ const Twogame = () => {
   useEffect(() => {
     resetGame();
   }, [gridSize]);
+  useEffect(() => {
+    const board = boardRef.current;
+    const preventDefault = (e) => e.preventDefault();
+    board.addEventListener("touchmove", preventDefault, { passive: false });
+
+    return () => {
+      board.removeEventListener("touchmove", preventDefault);
+    };
+  }, []);
 
   const resetGame = () => {
     setGrid(getInitialGrid(gridSize));
@@ -230,6 +240,7 @@ const Twogame = () => {
         </div>
       )}
       <div
+        ref={boardRef}
         className="game2048-board"
         style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}
         onTouchStart={handleTouchStart}
