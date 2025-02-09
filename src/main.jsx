@@ -7,6 +7,7 @@ import Homepage from "./Homepage/Homepage.jsx";
 import Memory from "./Memory/Memory.jsx";
 import Tetris from "./Tetris/Tetris.jsx";
 import Twogame from "./Twogame/Twogame.jsx";
+import Sudoku from "./Sudoku/Sudoku.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/memory" element={<Memory />} />
         <Route path="/tetris" element={<Tetris />} />
         <Route path="/twogame" element={<Twogame />} />
+        <Route path="/sudoku" element={<Sudoku />} />
       </Routes>
     </Router>
   </StrictMode>

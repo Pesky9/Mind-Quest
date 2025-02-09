@@ -1,9 +1,10 @@
 .Main_Section {
   width: 85%;
   margin: auto;
-  height: 100vh;
+  height: auto;
   max-width: 1920px;
   animation: moveup 1s ease forwards;
+  margin-bottom: 50px;
 }
 
 .Main_Section::-webkit-scrollbar {

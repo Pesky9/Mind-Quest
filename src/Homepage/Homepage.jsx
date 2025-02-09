@@ -3,6 +3,7 @@ import "./Homepage.css";
 import Memory from "../assets/memory.webp";
 import Tetris from "../assets/Tetris.jpeg";
 import Twogame from "../assets/Twogame.webp";
+import Sudoku from "../assets/Sudoku.webp";
 import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
@@ -60,6 +61,15 @@ const Homepage = () => {
             }}
           >
             <h3>2048</h3>
+          </div>
+          <div
+            className="Try_This"
+            style={{ backgroundImage: `url(${Sudoku})` }}
+            onClick={() => {
+              navigate("/sudoku");
+            }}
+          >
+            <h3>Sudoku</h3>
           </div>
         </div>
       </div>
