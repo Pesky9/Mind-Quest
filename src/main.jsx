@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage/Homepage.jsx";
 import Memory from "./Memory/Memory.jsx";
 import Tetris from "./Tetris/Tetris.jsx";
+import Twogame from "./Twogame/Twogame.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/home" element={<Homepage />} />
         <Route path="/memory" element={<Memory />} />
         <Route path="/tetris" element={<Tetris />} />
+        <Route path="/twogame" element={<Twogame />} />
       </Routes>
     </Router>
   </StrictMode>
