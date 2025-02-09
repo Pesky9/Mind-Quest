@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Tetris.css";
+import { useNavigate } from "react-router-dom";
 
 const ROWS = 20;
 const COLS = 10;
@@ -84,6 +85,8 @@ function useInterval(callback, delay) {
 }
 
 const Tetris = () => {
+  const navigate = useNavigate();
+
   const [board, setBoard] = useState(createBoard());
   const [currentTetromino, setCurrentTetromino] = useState(randomTetromino());
   const [currentShape, setCurrentShape] = useState(currentTetromino.shape);
