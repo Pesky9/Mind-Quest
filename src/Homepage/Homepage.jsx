@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Homepage.css";
 import Memory from "../assets/memory.webp";
 import Tetris from "../assets/Tetris.jpeg";
+import Twogame from "../assets/Twogame.webp";
 import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
@@ -50,6 +51,15 @@ const Homepage = () => {
             }}
           >
             <h3>Tetris</h3>
+          </div>
+          <div
+            className="Try_This"
+            style={{ backgroundImage: `url(${Twogame})` }}
+            onClick={() => {
+              navigate("/twogame");
+            }}
+          >
+            <h3>2048</h3>
           </div>
         </div>
       </div>

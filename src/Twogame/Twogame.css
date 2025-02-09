@@ -1,0 +1,136 @@
+.game2048-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: sans-serif;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  color: #ddd;
+}
+.game2048-board {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  max-width: 500px;
+  background: #222;
+  padding: 10px;
+  border-radius: 6px;
+}
+.game2048-cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #333;
+  border-radius: 3px;
+  overflow: hidden;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ddd;
+}
+.game2048-cell-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+.game2048-cell-content.merged {
+  animation: pop 0.3s ease-out;
+}
+@keyframes pop {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.game2048-cell-2 {
+  background: #00aaff;
+}
+.game2048-cell-4 {
+  background: linear-gradient(135deg, #0099e6, #00aaff);
+}
+.game2048-cell-8 {
+  background: #0088cc;
+  color: #f9f6f2;
+}
+.game2048-cell-16 {
+  background: linear-gradient(135deg, #0077b3, #0088cc);
+  color: #f9f6f2;
+}
+.game2048-cell-32 {
+  background: #006699;
+  color: #f9f6f2;
+}
+.game2048-cell-64 {
+  background: linear-gradient(135deg, #005580, #006699);
+  color: #f9f6f2;
+}
+.game2048-cell-128 {
+  background: #004466;
+  color: #f9f6f2;
+}
+.game2048-cell-256 {
+  background: linear-gradient(135deg, #003355, #004466);
+  color: #f9f6f2;
+}
+.game2048-cell-512 {
+  background: #002244;
+  color: #f9f6f2;
+}
+.game2048-cell-1024 {
+  background: linear-gradient(135deg, #001133, #002244);
+  color: #f9f6f2;
+}
+.game2048-cell-2048 {
+  background: #000d22;
+  color: #f9f6f2;
+}
+.game2048-gameover {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 17, 34, 0.85);
+  color: #f9f6f2;
+  padding: 20px;
+  border-radius: 6px;
+  text-align: center;
+  z-index: 10;
+}
+.game2048-gameover p {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.game2048-gameover button {
+  background: #00aaff;
+  color: #f9f6f2;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.game2048-gameover button:hover {
+  background: #0088cc;
+}
+@media (max-width: 600px) {
+  .game2048-container {
+    max-width: 90vw;
+  }
+  .game2048-cell-content {
+    font-size: 1.5rem;
+  }
+}
