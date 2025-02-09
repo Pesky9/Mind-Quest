@@ -12,9 +12,9 @@ createRoot(document.getElementById("root")).render(
     <Router>
       <Routes>
         <Route exact path="/" element={<App />} />
-        <Route exact path="/home" element={<Homepage />} />
-        <Route exact path="/memory" element={<Memory />} />
-        <Route exact path="/tetris" element={<Tetris />} />
+        <Route path="/home" element={<Homepage />} />
+        <Route path="/memory" element={<Memory />} />
+        <Route path="/tetris" element={<Tetris />} />
       </Routes>
     </Router>
   </StrictMode>
