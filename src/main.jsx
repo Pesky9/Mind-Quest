@@ -5,6 +5,7 @@ import App from "./Intro/Intro.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage/Homepage.jsx";
 import Memory from "./Memory/Memory.jsx";
+import Tetris from "./Tetris/Tetris.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")).render(
         <Route exact path="/" element={<App />} />
         <Route exact path="/home" element={<Homepage />} />
         <Route exact path="/memory" element={<Memory />} />
+        <Route exact path="/tetris" element={<Tetris />} />
       </Routes>
     </Router>
   </StrictMode>
