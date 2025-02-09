@@ -222,7 +222,7 @@ const Twogame = () => {
           navigate("/home");
         }}
       />
-      ;<h1>2048</h1>
+      <h1>2048</h1>
       {gameOver && (
         <div className="game2048-gameover">
           <p>Game Over</p>

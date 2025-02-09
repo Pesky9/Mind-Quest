@@ -127,9 +127,6 @@
   background: #0088cc;
 }
 @media (max-width: 600px) {
-  .game2048-container {
-    max-width: 90vw;
-  }
   .game2048-cell-content {
     font-size: 1.5rem;
   }
