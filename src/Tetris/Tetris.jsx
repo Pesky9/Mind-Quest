@@ -279,6 +279,14 @@ const Tetris = () => {
 
   return (
     <div className="tetris-container">
+      <img
+        className="Back_button"
+        src="https://cdn-icons-png.freepik.com/256/10117/10117449.png?ga=GA1.1.319443277.1739009519&semt=ais_hybrid"
+        alt="Back"
+        onClick={() => {
+          navigate("/home");
+        }}
+      />
       <h1>Tetris</h1>
       {gameOver && (
         <div className="game-over">
