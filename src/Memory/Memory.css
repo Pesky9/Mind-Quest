@@ -108,6 +108,9 @@ body {
     width: 100px;
     height: 100px;
   }
+  .Back_button {
+    width: 30px;
+  }
 }
 
 .card {
@@ -145,15 +148,17 @@ body {
 .card.vanish {
   opacity: 0;
   pointer-events: none;
-  animation: flipp 0.5s ease-in-out forwards;
-  transition: opacity 0.1s ease-in-out 0.5s, transform 0.5s ease-in-out 0.5s;
+  animation: shrinkOut 0.5s ease-in-out forwards;
+  transition: opacity 0.2s ease-in-out 0.3s, transform 0.5s ease-in-out 0.3s;
 }
 
-@keyframes flipp {
+@keyframes shrinkOut {
   from {
-    transform: rotateY(0deg);
+    transform: scale(1);
+    opacity: 1;
   }
   to {
-    transform: rotateY(180deg);
+    transform: scale(0);
+    opacity: 0;
   }
 }
