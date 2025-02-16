@@ -1,0 +1,89 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sudoku-grid {
+  display: grid;
+  gap: 4px;
+  margin: 20px auto;
+  width: 90vw;
+}
+
+@media (max-width: 599px) {
+  .sudoku-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 600px) {
+  .sudoku-grid {
+    grid-template-columns: repeat(8, 1fr);
+    max-width: 600px;
+  }
+}
+
+/* Base style for each cell */
+.sudoku-cell {
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid #00aaff;
+  box-sizing: border-box;
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 0;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+/* Style for revealed cells: a slightly lighter dark shade */
+.sudoku-cell.revealed {
+  background-color: #333333;
+}
+
+/* Style for flagged cells (only when not revealed) */
+.sudoku-cell.flagged {
+  color: #ff5555;
+}
+
+/* Remove default outline on focus */
+.sudoku-cell:focus {
+  outline: none;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #0088cc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.timer {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.result {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+/* Back button style */
+.Back_button {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin: 10px;
+}
