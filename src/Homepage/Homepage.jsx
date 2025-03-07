@@ -5,6 +5,7 @@ import Tetris from "../assets/Tetris.jpeg";
 import Twogame from "../assets/Twogame.webp";
 import Sudoku from "../assets/Sudoku.webp";
 import Minesweeper from "../assets/Minesweeper.jpeg";
+import Quiz from "../assets/Quiz.webp";
 import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
@@ -80,6 +81,15 @@ const Homepage = () => {
             }}
           >
             <h3>Minesweeper</h3>
+          </div>
+          <div
+            className="Try_This"
+            style={{ backgroundImage: `url(${Quiz})` }}
+            onClick={() => {
+              navigate("/quiz");
+            }}
+          >
+            <h3>Quiz Time</h3>
           </div>
         </div>
       </div>
