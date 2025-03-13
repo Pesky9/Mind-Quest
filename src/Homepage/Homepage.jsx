@@ -35,7 +35,7 @@ const Homepage = () => {
     <div className="Main_Section">
       <div className="Heading">
         <h1>Hello, Player!</h1>
-        <h2>Good Evening</h2>
+        <h2>Good Afternoon</h2>
         <div className="Game_Section">
           <div
             className="Try_This"
