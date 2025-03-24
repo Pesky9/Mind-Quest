@@ -1,9 +1,17 @@
-import React, { useState, useEffect, useMemo } from "react";
+"use client";
+
+import { useState, useEffect, useMemo } from "react";
 import "./Sudoku.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { leaderboardService } from "../services/leaderboardService";
+import Leaderboard from "../components/Leaderboard";
 
 function Sudoku() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { username } = useUser();
+
   const [boardSize, setBoardSize] = useState(window.innerWidth < 600 ? 4 : 8);
   const solution = useMemo(() => {
     const sol = [];
@@ -16,6 +24,7 @@ function Sudoku() {
     }
     return sol;
   }, [boardSize]);
+
   const generateBoard = () => {
     const newBoard = [];
     for (let i = 0; i < boardSize; i++) {
@@ -31,9 +40,21 @@ function Sudoku() {
     }
     return newBoard;
   };
+
   const [board, setBoard] = useState(generateBoard());
   const [result, setResult] = useState("");
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [scoreSubmitted, setScoreSubmitted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showLeaderboard") === "true") {
+      setShowLeaderboard(true);
+      navigate("/sudoku", { replace: true });
+    }
+  }, [location, navigate]);
+
   useEffect(() => {
     const handleResize = () => {
       const newSize = window.innerWidth < 600 ? 4 : 8;
@@ -42,18 +63,47 @@ function Sudoku() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   useEffect(() => {
     setBoard(generateBoard());
     setResult("");
     setTimeElapsed(0);
+    setScoreSubmitted(false);
   }, [boardSize]);
+
   useEffect(() => {
-    if (result === "Correct! 🎉") return;
+    if (result === "Correct! 🎉") {
+      if (!scoreSubmitted) {
+        const baseScore = boardSize * 1000;
+        const timeDeduction = timeElapsed * 5;
+        const finalScore = Math.max(0, baseScore - timeDeduction);
+
+        const leaderboardData = {
+          game: "Sudoku",
+          username: username || "Anonymous",
+          score: finalScore,
+          time: timeElapsed,
+          boardSize: boardSize,
+        };
+
+        leaderboardService
+          .submitScore(leaderboardData)
+          .then(() => {
+            setScoreSubmitted(true);
+          })
+          .catch((error) => {
+            console.error("Error submitting score:", error);
+          });
+      }
+      return;
+    }
+
     const timer = setInterval(() => {
       setTimeElapsed((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [result]);
+  }, [result, timeElapsed, boardSize, username, scoreSubmitted]);
+
   const handleChange = (e, rowIndex, colIndex) => {
     const newValue = e.target.value;
     setBoard((prevBoard) => {
@@ -65,12 +115,13 @@ function Sudoku() {
       return newBoard;
     });
   };
+
   const checkSudoku = () => {
     let isCorrect = true;
     for (let i = 0; i < boardSize; i++) {
       for (let j = 0; j < boardSize; j++) {
         if (!board[i][j].disabled) {
-          if (parseInt(board[i][j].value) !== solution[i][j]) {
+          if (Number.parseInt(board[i][j].value) !== solution[i][j]) {
             isCorrect = false;
           }
         }
@@ -78,11 +129,14 @@ function Sudoku() {
     }
     setResult(isCorrect ? "Correct! 🎉" : "Try Again! ❌");
   };
+
   const resetGame = () => {
     setBoard(generateBoard());
     setResult("");
     setTimeElapsed(0);
+    setScoreSubmitted(false);
   };
+
   return (
     <div className="game2048-container">
       <img
@@ -92,9 +146,17 @@ function Sudoku() {
         onClick={() => navigate("/home")}
       />
       <div className="app">
-        <h2>
-          Mini Sudoku ({boardSize}x{boardSize})
-        </h2>
+        <div className="game-header">
+          <h2>
+            Mini Sudoku ({boardSize}x{boardSize})
+          </h2>
+          <button
+            className="leaderboard-toggle-btn"
+            onClick={() => setShowLeaderboard(true)}
+          >
+            View Leaderboard
+          </button>
+        </div>
         <div className="timer">Time: {timeElapsed}s</div>
         <div className="sudoku-grid">
           {board.map((row, rowIndex) =>
@@ -115,7 +177,18 @@ function Sudoku() {
         <button onClick={checkSudoku}>Check Solution</button>
         <button onClick={resetGame}>New Game</button>
         <p className="result">{result}</p>
+
+        {result === "Correct! 🎉" && (
+          <div className="success-message">
+            <p>Great job! You completed the puzzle in {timeElapsed} seconds.</p>
+            <button onClick={resetGame}>Play Again</button>
+          </div>
+        )}
       </div>
+
+      {showLeaderboard && (
+        <Leaderboard game="Sudoku" onClose={() => setShowLeaderboard(false)} />
+      )}
     </div>
   );
 }

@@ -1,13 +1,31 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import "./Minesweeper.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { leaderboardService } from "../services/leaderboardService";
+import Leaderboard from "../components/Leaderboard";
 
 function Minesweeper() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { username } = useUser();
+
   const [boardSize, setBoardSize] = useState(window.innerWidth < 600 ? 4 : 8);
   const [board, setBoard] = useState(generateBoard(boardSize));
   const [result, setResult] = useState("");
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [scoreSubmitted, setScoreSubmitted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showLeaderboard") === "true") {
+      setShowLeaderboard(true);
+      navigate("/minesweeper", { replace: true });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,15 +40,41 @@ function Minesweeper() {
     setBoard(generateBoard(boardSize));
     setResult("");
     setTimeElapsed(0);
+    setScoreSubmitted(false);
   }, [boardSize]);
 
   useEffect(() => {
-    if (result) return;
+    if (result) {
+      if (result === "You Win! 🎉" && !scoreSubmitted) {
+        const baseScore = boardSize * boardSize * 100;
+        const timeDeduction = timeElapsed * 10;
+        const finalScore = Math.max(0, baseScore - timeDeduction);
+
+        const leaderboardData = {
+          game: "Minesweeper",
+          username: username || "Anonymous",
+          score: finalScore,
+          time: timeElapsed,
+          boardSize: boardSize,
+        };
+
+        leaderboardService
+          .submitScore(leaderboardData)
+          .then(() => {
+            setScoreSubmitted(true);
+          })
+          .catch((error) => {
+            console.error("Error submitting score:", error);
+          });
+      }
+      return;
+    }
+
     const timer = setInterval(() => {
       setTimeElapsed((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [result]);
+  }, [result, timeElapsed, boardSize, username, scoreSubmitted]);
 
   function generateBoard(size) {
     const totalCells = size * size;
@@ -141,6 +185,7 @@ function Minesweeper() {
     setBoard(generateBoard(boardSize));
     setResult("");
     setTimeElapsed(0);
+    setScoreSubmitted(false);
   };
 
   const formatTime = (seconds) => {
@@ -160,9 +205,17 @@ function Minesweeper() {
         onClick={() => navigate("/home")}
       />
       <div className="app">
-        <h2>
-          Minesweeper ({boardSize}x{boardSize})
-        </h2>
+        <div className="game-header">
+          <h2>
+            Minesweeper ({boardSize}x{boardSize})
+          </h2>
+          <button
+            className="leaderboard-toggle-btn"
+            onClick={() => setShowLeaderboard(true)}
+          >
+            View Leaderboard
+          </button>
+        </div>
         <div className="timer">Time: {formatTime(timeElapsed)}</div>
         <div className="sudoku-grid">
           {board.map((row, rowIndex) =>
@@ -190,7 +243,23 @@ function Minesweeper() {
         </div>
         <button onClick={resetGame}>New Game</button>
         <p className="result">{result}</p>
+
+        {result === "You Win! 🎉" && (
+          <div className="success-message">
+            <p>
+              Great job! You completed the game in {formatTime(timeElapsed)}.
+            </p>
+            <button onClick={resetGame}>Play Again</button>
+          </div>
+        )}
       </div>
+
+      {showLeaderboard && (
+        <Leaderboard
+          game="Minesweeper"
+          onClose={() => setShowLeaderboard(false)}
+        />
+      )}
     </div>
   );
 }

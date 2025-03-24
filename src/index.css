@@ -1,3 +1,55 @@
 body::-webkit-scrollbar {
   width: 0px;
 }
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.leaderboard-toggle-btn {
+  background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.leaderboard-toggle-btn:hover {
+  background: linear-gradient(135deg, #00aaff 0%, #0088cc 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
+}
+
+.game-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #00aaff;
+  font-weight: bold;
+}
+
+.stat-item {
+  background-color: rgba(0, 170, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.success-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(0, 170, 255, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.success-message p {
+  color: #00aaff;
+  margin-bottom: 1rem;
+}

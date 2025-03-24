@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Twogame.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { leaderboardService } from "../services/leaderboardService";
+import Leaderboard from "../components/Leaderboard";
 
 const createEmptyGrid = (size) =>
   Array.from({ length: size }, () =>
@@ -102,14 +105,52 @@ const isGameOver = (grid) => {
   return true;
 };
 
+const getHighestTile = (grid) => {
+  let highest = 0;
+  grid.forEach((row) => {
+    row.forEach((tile) => {
+      if (tile.value > highest) {
+        highest = tile.value;
+      }
+    });
+  });
+  return highest;
+};
+
+const calculateScore = (grid) => {
+  let score = 0;
+  grid.forEach((row) => {
+    row.forEach((tile) => {
+      score += tile.value;
+    });
+  });
+  return score;
+};
+
 const Twogame = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { username } = useUser();
 
   const [gridSize, setGridSize] = useState(4);
   const [grid, setGrid] = useState([]);
   const [gameOver, setGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [startTime, setStartTime] = useState(null);
+  const [gameTime, setGameTime] = useState(0);
   const touchStartRef = useRef(null);
   const boardRef = useRef(null);
+
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [scoreSubmitted, setScoreSubmitted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showLeaderboard") === "true") {
+      setShowLeaderboard(true);
+      navigate("/twogame", { replace: true });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     const updateGridSize = () => {
@@ -123,6 +164,24 @@ const Twogame = () => {
   useEffect(() => {
     resetGame();
   }, [gridSize]);
+
+  useEffect(() => {
+    if (!startTime) {
+      setStartTime(Date.now());
+    }
+  }, [startTime]);
+
+  // Update game time
+  useEffect(() => {
+    let interval;
+    if (startTime && !gameOver) {
+      interval = setInterval(() => {
+        setGameTime(Math.floor((Date.now() - startTime) / 1000));
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [startTime, gameOver]);
+
   useEffect(() => {
     const board = boardRef.current;
     const preventDefault = (e) => e.preventDefault();
@@ -133,9 +192,37 @@ const Twogame = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (gameOver && !scoreSubmitted) {
+      const finalScore = calculateScore(grid);
+      const highestTile = getHighestTile(grid);
+
+      const leaderboardData = {
+        game: "Twogame",
+        username: username || "Anonymous",
+        score: finalScore,
+        time: gameTime,
+        highestTile: highestTile,
+      };
+
+      leaderboardService
+        .submitScore(leaderboardData)
+        .then(() => {
+          setScoreSubmitted(true);
+        })
+        .catch((error) => {
+          console.error("Error submitting score:", error);
+        });
+    }
+  }, [gameOver, grid, gameTime, username, scoreSubmitted]);
+
   const resetGame = () => {
     setGrid(getInitialGrid(gridSize));
     setGameOver(false);
+    setScore(0);
+    setStartTime(Date.now());
+    setGameTime(0);
+    setScoreSubmitted(false);
   };
 
   const handleMove = (direction) => {
@@ -149,6 +236,10 @@ const Twogame = () => {
     if (!gridsEqual(grid, newGrid)) {
       newGrid = addRandomTile(newGrid);
       setGrid(newGrid);
+
+      const newScore = calculateScore(newGrid);
+      setScore(newScore);
+
       if (isGameOver(newGrid)) setGameOver(true);
     }
   };
@@ -232,10 +323,29 @@ const Twogame = () => {
           navigate("/home");
         }}
       />
-      <h1>2048</h1>
+      <div className="game-header">
+        <h1>2048</h1>
+        <button
+          className="leaderboard-toggle-btn"
+          onClick={() => setShowLeaderboard(true)}
+        >
+          View Leaderboard
+        </button>
+      </div>
+
+      <div className="game-stats">
+        <div className="stat-item">Score: {score}</div>
+        <div className="stat-item">
+          Time: {Math.floor(gameTime / 60)}:
+          {(gameTime % 60).toString().padStart(2, "0")}
+        </div>
+      </div>
+
       {gameOver && (
         <div className="game2048-gameover">
           <p>Game Over</p>
+          <p>Final Score: {score}</p>
+          <p>Highest Tile: {getHighestTile(grid)}</p>
           <button onClick={resetGame}>Retry</button>
         </div>
       )}
@@ -264,6 +374,10 @@ const Twogame = () => {
         ))}
       </div>
       <p>Use arrow keys or swipe to move the tiles.</p>
+
+      {showLeaderboard && (
+        <Leaderboard game="2048" onClose={() => setShowLeaderboard(false)} />
+      )}
     </div>
   );
 };

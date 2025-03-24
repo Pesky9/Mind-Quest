@@ -51,10 +51,177 @@
   background-size: contain;
   background-position: 50%;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .Try_This h3 {
   text-align: left;
   margin: 0;
   font-size: 20px;
+}
+
+/* New styles for username functionality */
+.user-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.username-btn {
+  background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.username-btn:hover {
+  background: linear-gradient(135deg, #00aaff 0%, #0088cc 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
+}
+
+.username-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.username-modal {
+  background: linear-gradient(135deg, #1a2a3a 0%, #0d1520 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.username-modal h2 {
+  color: #00aaff;
+  margin-top: 0;
+  text-align: center;
+}
+
+.username-modal p {
+  color: #ccc;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.username-modal input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #00aaff;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.username-modal input:focus {
+  outline: none;
+  border-color: #00ccff;
+  box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.3);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cancel-btn,
+.save-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #ccc;
+}
+
+.cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%);
+  border: none;
+  color: white;
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #00aaff 0%, #0088cc 100%);
+  transform: translateY(-2px);
+}
+
+.save-btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.anonymous-note {
+  font-size: 12px;
+  color: #888;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Game overlay for leaderboard buttons */
+.game-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  justify-content: center;
+}
+
+.Try_This:hover .game-overlay {
+  opacity: 1;
+}
+
+.leaderboard-btn {
+  background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.leaderboard-btn:hover {
+  background: linear-gradient(135deg, #00aaff 0%, #0088cc 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
 }
